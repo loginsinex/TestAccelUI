@@ -1,2 +1,2 @@
 # TestAccelUI
-Accelerators for anyone windows in application
+Accelerators for any window in application
