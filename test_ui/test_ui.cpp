@@ -214,12 +214,6 @@ HWND InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 //
 
-BOOL CALLBACK SetChildsFont(HWND hwnd, LPARAM lParam)
-{
-	SendMessage( hwnd, WM_SETFONT, (WPARAM)lParam, TRUE );
-	return TRUE;
-}
-
 INT_PTR CALLBACK DlgTestProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
 	switch(message)
@@ -302,7 +296,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 	case WM_SETFONT:
 		{
-			EnumChildWindows( hWnd, SetChildsFont, (LPARAM)wParam );
+			EnumChildWindows( 
+				hWnd, 
+				[]( HWND hwnd, LPARAM lparam )->BOOL CALLBACK 
+				{ SendMessage( hwnd, WM_SETFONT, (WPARAM)lparam, TRUE ); return TRUE; },
+				(LPARAM)wParam );
 			break;
 		}
     case WM_COMMAND:
